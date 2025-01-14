@@ -74,11 +74,18 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       # Tag and push Docker images to Docker Hub
-      - name: Push Docker images to Docker Hub
+      - name: Build and Push Docker images to Docker Hub
         run: |
+          # Debug: List all Docker images available locally to ensure that images exist
+          docker images
+          
           # Log in to Docker Hub
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          
+
+          # Ensure the images are built before tagging
+          docker build -t auth-service ./auth-service-directory
+          docker build -t user-service ./user-service-directory
+
           # Tag the Docker images
           docker tag auth-service $DOCKER_USERNAME/auth-service:latest  # Tag the auth-service image
           docker tag user-service $DOCKER_USERNAME/user-service:latest  # Tag the user-service image
@@ -89,4 +96,5 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
 
