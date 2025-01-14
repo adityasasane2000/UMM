@@ -52,13 +52,13 @@ jobs:
       - name: Build Docker image for Server1
         working-directory: ./Server1
         run: |
-          docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t auth-service .
+          docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t $DOCKER_USERNAME/auth-service:latest .
 
       # Build Docker image for Server2
       - name: Build Docker image for Server2
         working-directory: ./Server2
         run: |
-            docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t user-service .
+            docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t $DOCKER_USERNAME/user-service:latest .
 
       # Debug: List local Docker images to ensure the images were built
       - name: List local Docker images
@@ -73,28 +73,14 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Tag and push Docker images to Docker Hub
-      - name: Build and Push Docker images to Docker Hub
+      # Push Docker images to Docker Hub
+      - name: Push Docker images to Docker Hub
         run: |
-          # Debug: List all Docker images available locally to ensure that images exist
-          docker images
+          # Push the auth-service image
+          docker push $DOCKER_USERNAME/auth-service:latest
           
-          # Log in to Docker Hub
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-
-          # Ensure the images are built before tagging
-          docker build -t auth-service ./auth-service
-          docker build -t user-service ./user-service
-
-          # Tag the Docker images
-          docker tag auth-service $DOCKER_USERNAME/auth-service:latest  # Tag the auth-service image
-          docker tag user-service $DOCKER_USERNAME/user-service:latest  # Tag the user-service image
-          
-          # Push the Docker images to Docker Hub
-          docker push $DOCKER_USERNAME/auth-service:latest            # Push the auth-service image
-          docker push $DOCKER_USERNAME/user-service:latest            # Push the user-service image
+          # Push the user-service image
+          docker push $DOCKER_USERNAME/user-service:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-
