@@ -1,0 +1,85 @@
+name: CI/CD Pipeline for Authentication Microservice
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Debug: List files at root and inside directories
+      - name: List files at root
+        run: |
+          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS
+          
+      - name: List files inside Server1 directory
+        run: |
+          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS/Server1
+          
+      - name: List files inside Server2 directory
+        run: |
+          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS/Server2
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      # Install dependencies for Server1
+      - name: Install dependencies for Server1
+        working-directory: ./Server1
+        run: |
+          npm install
+
+      # Install dependencies for Server2
+      - name: Install dependencies for Server2
+        working-directory: ./Server2
+        run: |
+          npm install
+
+      # Build Docker image for Server1
+      - name: Build Docker image for Server1
+        working-directory: ./Server1
+        run: |
+          docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-server-1 .
+
+      # Build Docker image for Server2
+      - name: Build Docker image for Server2
+        working-directory: ./Server2
+        run: |
+            docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-server-2 .
+
+      # Debug: List local Docker images to ensure the images were built
+      - name: List local Docker images
+        run: |
+          docker images
+
+      # Log in to Docker Hub (only once)
+      - name: Log in to Docker Hub
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin docker.io
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Tag and push Docker images to Docker Hub
+      - name: Push Docker images to Docker Hub
+        run: |
+          docker tag my-server-1 $DOCKER_USERNAME/my-server-1:latest  # Tag the correct image
+          docker tag my-server-2 $DOCKER_USERNAME/my-server-2:latest  # Tag the second image
+          docker push $DOCKER_USERNAME/my-server-1:latest            # Push the first image
+          docker push $DOCKER_USERNAME/my-server-2:latest            # Push the second image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
