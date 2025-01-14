@@ -20,15 +20,15 @@ jobs:
       # Debug: List files at root and inside directories
       - name: List files at root
         run: |
-          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS
+          ls -al /home/runner/work/UMM/UMM
           
       - name: List files inside Server1 directory
         run: |
-          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS/Server1
+          ls -al /home/runner/work/UMM/UMM/Server1
           
       - name: List files inside Server2 directory
         run: |
-          ls -al /home/runner/work/User_Management_ExpressJS/User_Management_ExpressJS/Server2
+          ls -al /home/runner/work/UMM/UMM/Server2
 
       # Set up Node.js environment
       - name: Set up Node.js
