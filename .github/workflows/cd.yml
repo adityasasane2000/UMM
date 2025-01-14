@@ -52,13 +52,13 @@ jobs:
       - name: Build Docker image for Server1
         working-directory: ./Server1
         run: |
-          docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-server-1 .
+          docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t auth-service .
 
       # Build Docker image for Server2
       - name: Build Docker image for Server2
         working-directory: ./Server2
         run: |
-            docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-server-2 .
+            docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t user-service .
 
       # Debug: List local Docker images to ensure the images were built
       - name: List local Docker images
@@ -76,10 +76,10 @@ jobs:
       # Tag and push Docker images to Docker Hub
       - name: Push Docker images to Docker Hub
         run: |
-          docker tag my-server-1 $DOCKER_USERNAME/my-server-1:latest  # Tag the correct image
-          docker tag my-server-2 $DOCKER_USERNAME/my-server-2:latest  # Tag the second image
-          docker push $DOCKER_USERNAME/my-server-1:latest            # Push the first image
-          docker push $DOCKER_USERNAME/my-server-2:latest            # Push the second image
+          docker tag auth-service $DOCKER_USERNAME/auth-service:latest  # Tag the correct image
+          docker tag user-service $DOCKER_USERNAME/user-service:latest  # Tag the second image
+          docker push $DOCKER_USERNAME/auth-service:latest            # Push the first image
+          docker push $DOCKER_USERNAME/user-service:latest            # Push the second image
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
