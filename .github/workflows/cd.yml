@@ -83,8 +83,8 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
           # Ensure the images are built before tagging
-          docker build -t auth-service ./auth-service-directory
-          docker build -t user-service ./user-service-directory
+          docker build -t auth-service ./auth-service
+          docker build -t user-service ./user-service
 
           # Tag the Docker images
           docker tag auth-service $DOCKER_USERNAME/auth-service:latest  # Tag the auth-service image
