@@ -8,9 +8,11 @@ ENV MONGO_URI=$MONGO_URI
 
 WORKDIR /app
 
-COPY . .
+COPY Server2/package*.json .
 
 RUN npm install
+
+COPY /Server2 .
 
 EXPOSE 8001
 

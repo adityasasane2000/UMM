@@ -10,9 +10,11 @@ ENV JWT_SECRET=$JWT_SECRET
 
 WORKDIR /app
 
-COPY . .
+COPY Server1/package*.json .
 
 RUN npm install
+
+COPY /Server1 .
 
 EXPOSE 8000
 
