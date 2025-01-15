@@ -8,7 +8,7 @@ userRouter.get("/home",async(req,res) => {
 });
 
 
-userRouter.get("/aboutus",async(req,res) => {
+userRouter.get("/about",async(req,res) => {
     res.send("Hello from About!");
 });
 
