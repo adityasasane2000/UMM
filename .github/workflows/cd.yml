@@ -48,9 +48,9 @@ jobs:
 
       - name: Deploy Updated Images to Minikube
         run: |
-          kubectl set image deployment/auth-deployment auth-container=aditya1113/authservice:latest
-          kubectl rollout restart deployment auth-deployment
-          kubectl rollout status deployment auth-deployment
+          kubectl set image deployment/nodejs-deployment auth-container=aditya1113/authservice:latest
+          kubectl rollout restart deployment nodejs-deployment
+          kubectl rollout status deployment nodejs-deployment
 
 
       
