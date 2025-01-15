@@ -20,5 +20,7 @@ spec:
         ports:
         - containerPort: 8000
         env:
-        - name: NODE_ENV
-          value: "production"
+        - name: URL
+          value: "mongodb+srv://sahilpatil:PttzQO8zWhehQkW8@onelabventure.trajh.mongodb.net/expressDB"
+        - name: SECRET_KEY
+          value: "qwertyuiop"

@@ -7,6 +7,11 @@ userRouter.get("/home",async(req,res) => {
     res.send("Hello from Aditya!");
 });
 
+
+userRouter.get("/about",async(req,res) => {
+    res.send("Hello from About!");
+});
+
 userRouter.post('/createNewUser',async (req,res)=>{    
     const newUser = new userModel(req.body);
     await newUser.save();
