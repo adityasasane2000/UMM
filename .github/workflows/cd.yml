@@ -24,14 +24,14 @@ jobs:
           context: .
           file: ./Server1/Dockerfile
           push: true
-          tags: aditya1113/authservice:latest
+          tags: aditya1113/authservice:${{ github.sha }}
       - name: build-push-docker-image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Server2/Dockerfile
           push: true
-          tags: aditya1113/userservice:latest
+          tags: aditya1113/userservice:${{ github.sha }}
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
@@ -49,6 +49,7 @@ jobs:
       - name: Deploy Updated Images to Minikube
         run: |
           kubectl apply -f ./Server1/deployment.yml
+          kubectl set image deployment/nodejs-deployment nodejs-container=aditya1113/authservice:${{ github.sha }}
           kubectl rollout restart deployment nodejs-deployment
           kubectl rollout status deployment nodejs-deployment
 
