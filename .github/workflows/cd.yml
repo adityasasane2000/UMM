@@ -32,3 +32,26 @@ jobs:
           file: ./Server2/Dockerfile
           push: true
           tags: aditya1113/userservice:latest
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Start Minikube
+        run: |
+          minikube start
+
+      - name: Use Minikube Docker Daemon
+        run: |
+          eval $(minikube docker-env)
+
+      - name: Deploy Updated Images to Minikube
+        run: |
+          kubectl set image deployment/auth-deployment auth-container=aditya1113/authservice:latest
+          kubectl rollout restart deployment auth-deployment
+          kubectl rollout status deployment auth-deployment
+
+
+      
+        
