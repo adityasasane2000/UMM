@@ -3,7 +3,9 @@ const userRouter = express.Router();
 const userModel = require('../model/userModel');
 const jwt = require('jsonwebtoken');
 
-
+userRouter.get("/home",async(req,res) => {
+    res.send("Hello from Aditya!");
+});
 
 userRouter.post('/createNewUser',async (req,res)=>{    
     const newUser = new userModel(req.body);
