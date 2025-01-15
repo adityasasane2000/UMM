@@ -17,6 +17,7 @@ spec:
       containers:
       - name: nodejs-container
         image: aditya1113/authservice:latest
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 8000
         env:
