@@ -38,20 +38,20 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Start Minikube
-        run: |
-          minikube start
+      # - name: Start Minikube
+      #   run: |
+      #     minikube start
 
-      - name: Use Minikube Docker Daemon
-        run: |
-          eval $(minikube docker-env)
+      # - name: Use Minikube Docker Daemon
+      #   run: |
+      #     eval $(minikube docker-env)
 
-      - name: Deploy Updated Images to Minikube
-        run: |
-          kubectl apply -f ./Server1/deployment.yml
-          kubectl set image deployment/nodejs-deployment nodejs-container=aditya1113/authservice:${{ github.sha }}
-          kubectl rollout restart deployment nodejs-deployment
-          kubectl rollout status deployment nodejs-deployment
+      # - name: Deploy Updated Images to Minikube
+      #   run: |
+      #     kubectl apply -f ./Server1/deployment.yml
+      #     kubectl set image deployment/nodejs-deployment-both nodejs-container=aditya1113/authservice:${{ github.sha }}
+      #     kubectl rollout restart deployment nodejs-deployment-both
+      #     kubectl rollout status deployment nodejs-deployment-both
 
 
       
