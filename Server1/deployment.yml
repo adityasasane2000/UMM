@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-deployment
+  name: nodejs-deployment-both
   labels:
     app: nodejs-app
 spec:
@@ -15,13 +15,38 @@ spec:
         app: nodejs-app
     spec:
       containers:
-      - name: nodejs-container
+      - name: authservice-container
         image: aditya1113/authservice:latest
         imagePullPolicy: "Always"
         ports:
         - containerPort: 8000
+          name: auth-port
         env:
         - name: URL
-          value: "mongodb+srv://sahilpatil:PttzQO8zWhehQkW8@onelabventure.trajh.mongodb.net/expressDB"
+          valueFrom:
+            secretKeyRef:
+              name: service-secrets
+              key: URL
         - name: SECRET_KEY
-          value: "qwertyuiop"
+          valueFrom:
+            secretKeyRef:
+              name: service-secrets
+              key: SECRET_KEY
+
+      - name: userservice-container
+        image: aditya1113/userservice:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8001
+          name: user-port
+        env:
+        - name: URL
+          valueFrom:
+            secretKeyRef:
+              name: service-secrets
+              key: URL
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: service-secrets
+              key: SECRET_KEY

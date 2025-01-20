@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 const userRouter = require('./routes/UserRoutes');
+const middleware = require('./middleware/authMiddleware');
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ dbConnection();
 
 app.use(cors());
 app.use(express.json());
-app.use("/users",userRouter);
+app.use("/users",middleware,userRouter);
 
 app.listen(8001,async()=>{
     console.log("Server Started! on 8001");

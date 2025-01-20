@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice-deployment
+  labels:
+    app: userservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+      - name: userservice-container
+        image: aditya1113/userservice:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8001
+        env:
+        - name: URL
+          value: "mongodb+srv://sahilpatil:PttzQO8zWhehQkW8@onelabventure.trajh.mongodb.net/expressDB"
+        - name: SECRET_KEY
+          value: "qwertyuiop"

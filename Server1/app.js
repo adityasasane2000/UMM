@@ -11,7 +11,7 @@ dbConnection();
 
 app.use(cors());
 app.use(express.json());
-app.use("/users/auth",userRouter);
+app.use("/auth",userRouter);
 
 app.listen(8000,()=>{
     console.log("Server Started!");

@@ -11,10 +11,10 @@ userRouter.get('/getAllUser',async (req,res)=>{
 });
 
 
-userRouter.get('/getUserById/:userId',async (req,res)=>{
-    let userId = req.params.userId;
+userRouter.get('/getUserById/:empId',async (req,res)=>{
+    let empId = req.params.empId;
     
-    const user = await userModel.findOne({userId});
+    const user = await userModel.findOne({empId});
     
     if(user){
         res.json({user});
